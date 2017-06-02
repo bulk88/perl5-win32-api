@@ -128,7 +128,9 @@ EOM1
     return  ($is_msvc_compiler?'
 ASFLAGS =  -Zi
 
-':'')
+'.($Config{make} eq 'gmake' ?
+	'.SUFFIXES: .asm
+':''):'')
 .'
 .asm$(OBJ_EXT):
 	'.($is_64bit_build ? 'ml64' : 'ml').' $(ASFLAGS) $(PERL_DEFINES)  -c $<

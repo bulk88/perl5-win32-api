@@ -746,7 +746,7 @@ C<Call()> method on this object to perform a call to the imported API
 
 Starting from version 0.40, you can also avoid creating a Win32::API::More object
 and instead automatically define a Perl sub with the same name of the API
-function you're importing. This 2nd way using C<Import> to create a sub instead
+function you're importing. This second way using C<Import> to create a sub instead
 of an object is slightly faster than doing C<-E<gt>Call()>. The details of the
 API definitions are the same, just the method name is different:
 
@@ -767,10 +767,9 @@ API definitions are the same, just the method name is different:
 Note that C<Import> returns the Win32::API obj on success and false on failure
 (in which case you can check the content of C<$^E>). This allows some settings
 to be set through method calls that can't be specified as a parameter to Import,
-yet still have the convience of not writing C<-E<gt>Call()>. The Win32::API obj
+yet still have the convenience of not writing C<-E<gt>Call()>. The Win32::API obj
 does not need to be assigned to a scalar. C<unless(Win32::API::More-E<gt>Import>
-is fine. Prior to v0.76_02, C<Import> returned returned 1 on success and 0 on
-failure.
+is fine. Prior to v0.76_02, C<Import> returned 1 on success and 0 on failure.
 
 =head2 IMPORTING A FUNCTION
 
@@ -937,6 +936,7 @@ in the very long output.
 Also note that many Win32 APIs are exported twice, with the addition of
 a final B<A> or B<W> to their name, for - respectively - the ASCII 
 and the Unicode version.
+
 When a function name is not found, Win32::API will actually append
 an B<A> to the name and try again; if the extension is built on a
 Unicode system, then it will try with the B<W> instead.
@@ -957,7 +957,7 @@ or as a list reference. The following forms are valid:
     [a, b, c, d]
     \@LIST
 
-But those are not:
+But these are not:
 
     (a, b, c, d)
     @LIST
@@ -1023,13 +1023,12 @@ null terminated strings or NULL pointer are supported. If P is an in type, NULL
 is integer C<0>. C<undef>, C<"0">, and C<""+0> are not integer C<0>, C<"0"+0> is
 integer C<0>.
 
-It is suggested to
-not use P as a return type and instead use N and read the memory yourself, and
-free the pointer if applicable. This pointer is effectively undefined after the
-C function returns control to Perl. The C function may not hold onto it after
-the C function returns control. There are exceptions where the pointer will
-remain valid after the C function returns control, but tread at your own risk,
-and at your knowledge of Perl interpreter's C internals.
+It is suggested to not use P as a return type and instead use N and read the 
+memory yourself, and free the pointer if applicable. This pointer is effectively 
+undefined after the C function returns control to Perl. The C function may not 
+hold onto it after the C function returns control. There are exceptions where 
+the pointer will remain valid after the C function returns control, but tread 
+at your own risk, and at your knowledge of Perl interpreter's C internals.
 
 =item C<T>: 
 value is a Win32::API::Struct object, in parameter only, pass by reference
@@ -1045,6 +1044,7 @@ letters, equivalent to a ""
 =back
 
 For beginners, just skip this paragraph.
+
 Note, all parameter types are little endian. This is probably what you want
 unless the documentation for the C function you are calling explicitly says
 the parameters must be big endian. If there is no documentation for your C
@@ -1055,11 +1055,11 @@ scalars are effectively opaque and their machine representation is
 irrelevant. On Windows Perl, scalar numbers are little endian
 internally. So C<$number = 5; print "$number";> will put 5 on the screen.
 C<$number> given to Win32::API will pass little endian integer 5 to the C
-function call. This is almost surly what you want. If you really must pass
+function call. This is almost certainly what you want. If you really must pass
 a big endian integer, do C<$number = unpack('L', pack('N', 5));>, then
 C<print "$number";> will put 83886080 on the screen, but this is big endian 5,
 and passing 83886080 to C<-E<gt>Call()> will make sure that
-the C function is getting big endian 5. See L<perlpacktut> for more.
+the C function is getting big endian 5. See L<perlpacktut> for more information.
 
 Our function needs two parameters: a number (C<DWORD>) and a pointer to a 
 string (C<LPSTR>):
@@ -1115,10 +1115,12 @@ Perl will C<croak> an error message and C<die>.
 The two parameters needed here are the length of the buffer
 that will hold the returned temporary path, and a pointer to the 
 buffer itself.
+
 For numerical parameters except for char, you can use either a constant expression
 or a variable, it will be numified similar to the expression C<($var+0)>.
 For pointers, also note that B<memory must be allocated before calling the function>,
 just like in C.
+
 For example, to pass a buffer of 80 characters to GetTempPath(),
 it must be initialized before with:
 
@@ -1137,7 +1139,7 @@ Note that you never need to pass a reference to the variable
 by the function. 
 
 A little problem here is that Perl does not trim the variable, 
-so $lpBuffer will still contain 80 characters in return; the exceeding 
+so $lpBuffer will still contain 80 characters in return; the extra 
 characters will be spaces, because we said C<" " x 80>.
 
 In this case we're lucky enough, because the value returned by 
